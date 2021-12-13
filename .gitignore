@@ -6,6 +6,6 @@ dist
 # Serverless directories
 .serverless
 
-ssm-parameters.*
+ssm-parameters.*.yml
 
 .idea
