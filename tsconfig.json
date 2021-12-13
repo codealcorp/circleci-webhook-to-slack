@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "useDefineForClassFields": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": "."
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

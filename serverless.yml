@@ -1,0 +1,41 @@
+service: circleci-webhook-to-slack
+frameworkVersion: '2 || 3'
+
+custom:
+  defaultStage: dev
+  defaultRegion: ap-northeast-1
+  ssmParameters: ${file(ssm-parameters.${opt:stage, self:provider.stage}.${env:AWS_DEFAULT_REGION, self:cutom:defaultRegion}.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ${env:AWS_DEFAULT_REGION, self:custom.defaultStage}
+  environment:
+    STAGE: ${opt:stage, self:custom.defaultStage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+      Resource:
+        - ${self:custom.ssmParameters.ssmArnBase}${self:custom.ssmParameters.keys.secret}
+        - ${self:custom.ssmParameters.ssmArnBase}${self:custom.ssmParameters.keys.slack_webhook_url}
+
+package:
+  exclude:
+    - src/**
+    - .idea/**
+    - ssm-parameters.*.yml
+
+functions:
+  webhook:
+    handler: dist/handler.webhoook
+    events:
+      - httpApi:
+          path: /
+          method: post
+    environment:
+      SLACK_WEBHOOK_URL: ${self:custom.ssmParameters.keys.slack_webhook_url}
+      SECRET: ${self:custom.ssmParameters.keys.secret}
