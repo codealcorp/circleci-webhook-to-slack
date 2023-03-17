@@ -2,6 +2,7 @@
   "name": "circleci-webhook-to-slack",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -20,7 +21,7 @@
     "eslint-plugin-import": "^2.25.3",
     "prettier": "^2.5.1",
     "serverless": "^3.28.1",
-    "typescript": "^4.5.2"
+    "typescript": "^5.0.2"
   },
   "dependencies": {
     "aws-sdk": "^2.1044.0",
