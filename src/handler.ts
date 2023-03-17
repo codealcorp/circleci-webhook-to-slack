@@ -5,7 +5,6 @@ import {
 } from 'aws-lambda'
 import {SSM} from 'aws-sdk'
 import CryptoJS from 'crypto-js'
-import fetch from 'node-fetch'
 import {WebHookWorkflowCompletedPayload} from './circleci'
 
 const ssm = new SSM()
