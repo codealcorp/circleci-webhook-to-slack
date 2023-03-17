@@ -12,14 +12,14 @@
     "@types/aws-lambda": "^8.10.86",
     "@types/crypto-js": "^4.0.2",
     "@types/node": "^16.11.12",
+    "@types/node-fetch": "2",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
-    "@types/node-fetch": "2",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "prettier": "^2.5.1",
-    "serverless": "^2.68.0",
+    "serverless": "^3.28.1",
     "typescript": "^4.5.2"
   },
   "dependencies": {
