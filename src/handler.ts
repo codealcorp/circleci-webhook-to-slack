@@ -1,26 +1,29 @@
+import {GetParameterCommand, SSMClient} from '@aws-sdk/client-ssm'
 import {
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2,
   APIGatewayProxyEventHeaders
 } from 'aws-lambda'
-import {SSM} from 'aws-sdk'
 import CryptoJS from 'crypto-js'
-import fetch from 'node-fetch'
 import {WebHookWorkflowCompletedPayload} from './circleci'
 
-const ssm = new SSM()
+const ssm = new SSMClient({})
 
 const getSecret = async () => {
-  const result = await ssm
-    .getParameter({Name: process.env.SECRET, WithDecryption: true})
-    .promise()
+  const command = new GetParameterCommand({
+    Name: process.env.SECRET,
+    WithDecryption: true
+  })
+  const result = await ssm.send(command)
   return result.Parameter?.Value
 }
 
 const getSlackWebHookUrl = async () => {
-  const result = await ssm
-    .getParameter({Name: process.env.SLACK_WEBHOOK_URL, WithDecryption: true})
-    .promise()
+  const command = new GetParameterCommand({
+    Name: process.env.SLACK_WEBHOOK_URL,
+    WithDecryption: true
+  })
+  const result = await ssm.send(command)
   return result.Parameter?.Value
 }
 
