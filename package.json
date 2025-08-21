@@ -20,7 +20,6 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "crypto-js": "^4.1.1",
     "esbuild": "^0.25.9"
   }
 }
