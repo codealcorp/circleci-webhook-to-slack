@@ -19,7 +19,9 @@ Resources:
     Properties:
       Handler: dist/handler.webhoook
       CodeUri: ./
-      Runtime: nodejs18.x
+      Runtime: nodejs22.x
+      Architectures:
+        - arm64
       Timeout: 10
       MemorySize: 512
       LoggingConfig:
