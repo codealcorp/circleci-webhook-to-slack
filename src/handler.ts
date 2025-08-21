@@ -1,10 +1,10 @@
+import crypto from 'node:crypto'
 import {GetParameterCommand, SSMClient} from '@aws-sdk/client-ssm'
 import {
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2,
   APIGatewayProxyEventHeaders
 } from 'aws-lambda'
-import CryptoJS from 'crypto-js'
 import {WebHookWorkflowCompletedPayload} from './circleci'
 
 const ssm = new SSMClient({})
@@ -50,7 +50,10 @@ const checkSignature = async (signature: string, body: string) => {
     return false
   }
 
-  const digest = CryptoJS.HmacSHA256(body, secret).toString(CryptoJS.enc.Hex)
+  const digest = crypto
+    .createHmac('sha256', secret)
+    .update(body, 'utf8')
+    .digest('hex')
   return signature === digest
 }
 

@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: circleci-webhook-to-slack
+
+Parameters:
+  SlackWebhookUrlParameterName:
+    Type: String
+    Description: Name of the SSM Parameter for Slack Webhook URL
+    Default: /circleci_webhook_to_slack/slack_webhook_url
+  WebhookSecretParameterName:
+    Type: String
+    Description: Name of the SSM Parameter for Secret Key
+    Default: /circleci_webhook_to_slack/webhook_secret
+
+Resources:
+  WebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handler.webhoook
+      CodeUri: ./
+      Runtime: nodejs22.x
+      Architectures:
+        - arm64
+      Timeout: 10
+      MemorySize: 512
+      LoggingConfig:
+        LogFormat: JSON
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: !Ref SlackWebhookUrlParameterName
+          SECRET: !Ref WebhookSecretParameterName
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameter
+                - ssm:GetParameters
+              Resource:
+                - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${SlackWebhookUrlParameterName}'
+                - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${WebhookSecretParameterName}'
+            - Effect: Allow
+              Action: kms:Decrypt
+              Resource: '*'
+              Condition:
+                StringEquals:
+                  kms:RequestAlias: 'alias/aws/ssm'
+      FunctionUrlConfig:
+        AuthType: NONE
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        Minify: false
+        EntryPoints:
+          - ./src/handler.ts
+        OutExtension:
+          - .js=.mjs
+        External:
+          - '@aws-sdk/client-ssm'
