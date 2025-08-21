@@ -9,3 +9,5 @@ dist
 ssm-parameters.*.yml
 
 .idea
+
+/.aws-sam

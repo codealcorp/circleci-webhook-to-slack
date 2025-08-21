@@ -1,0 +1,10 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "circleci-webhook-to-slack"
+resolve_s3 = true
+s3_prefix = "circleci-webhook-to-slack"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
